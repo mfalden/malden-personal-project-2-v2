@@ -35,7 +35,7 @@ public class FancyConsole
 
     public static void Write(int row, int col, string output)
     {
-        if (row > NCurses.Lines - 1 || col > NCurses.Columns - 1){
+        if (row < 0 || col < 0 || row > NCurses.Lines - 1 || col > NCurses.Columns - 1){
             return;
         }
         NCurses.MoveAddString(row, col, output);
