@@ -52,6 +52,10 @@ public class Program
     public static void MoveScreen()
     {
         int input = FancyConsole.GetChar();
+        if (input == null)
+        {
+            throw new Exception("Input does not exist!");
+        }
         char asChar = (char)input;
         if (asChar == ' ')
         {
