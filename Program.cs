@@ -29,19 +29,20 @@ public class Program
             // flickering.
 
             InitializeScreen();
+            
 
             bool hasGameStarted = true; // false for testing
             while (hasGameStarted == true)
             {
-                // FancyConsole.Clear();
+                FancyConsole.Clear();
                 MoveScreen();
-                DrawAllObstacles(obstacles);
+                DrawAllObstacles2(obstacles);
                 DisplayDebugInfo();
                 FancyConsole.Refresh();
 
                 // TODO(jcollard 2022-03-06): You want to put at least a small delay
                 // at the end of the loop otherwise you will see flickering.
-                FancyConsole.Sleep(10);
+                FancyConsole.Sleep(20);
             }
         }
 
@@ -49,7 +50,10 @@ public class Program
 
     public static void InitializeScreen()
     {
-        List<Obstacle> obstacles = new List<Obstacle>();
+        // Feedback(jcollard 2022-04-07): I changes this to reference the global obstacles list
+        // Previously, this variable was local to this method. It was:
+        // List<Obstacle> obstacles = new List<Obstacle>();
+        obstacles = new List<Obstacle>();
         int times = 10;
         while (times > 0)
         {
@@ -58,7 +62,7 @@ public class Program
         }
         //Obstacle firstElement = obstacles[0];
 
-        DrawAllObstacles(obstacles);
+        DrawAllObstacles2(obstacles);
 
     }
 
@@ -70,12 +74,12 @@ public class Program
         //     throw new Exception("Input does not exist!");
         // }
         char asChar = (char)input;
-        if (asChar == ' ')
-        {
+        // if (asChar == ' ')
+        // {
 
             spaces++;
             AddObstacle(obstacles);
-        }
+        // }
     }
 
     public static List<Obstacle> AddObstacle(List<Obstacle> obstacles)
@@ -124,6 +128,42 @@ public class Program
                 columnNumber++;
             }
             totalLength += o.Length;
+        }
+    }
+
+    public static void DrawAllObstacles2(List<Obstacle> obstacles)
+    {
+        int totalLength = 0;
+        // Feedback(jcollard 2022-04-07): I like to keep breaking things up
+        // until they seem so simple they cannot be incorrect. Reading through
+        // your nested while loops is really challenging. So, I've broken it
+        // down into simpler components: 
+        // 1. Loop through all the obstacles
+        // 2. Within that loop, draw a single element
+        foreach(Obstacle o in obstacles)
+        {
+            DrawObstacle(o, totalLength);
+            totalLength += o.Length;
+        }
+    }
+    public static void DrawObstacle(Obstacle o, int offsetX)
+    {
+        // Drawing a single obstacles becomes pretty simple. First,
+        // Draw the floor.
+        int column = 0;
+        while (column < o.Length)
+        {
+            FancyConsole.Write(baseRow, start - spaces + column + offsetX, "_");
+            column++;
+        }
+
+        // Then draw the obstacle. In the first loop, we draw an extra '_' but
+        // then we draw over it here anyway so it's not a big deal.
+        int drawHeight = 0;
+        while (drawHeight <= o.Height)
+        {
+            FancyConsole.Write(baseRow - drawHeight, start - spaces + o.X + offsetX, "#");
+            drawHeight++;
         }
     }
 
