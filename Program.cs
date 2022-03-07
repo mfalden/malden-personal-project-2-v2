@@ -150,15 +150,24 @@ public class Program
     {
         // Drawing a single obstacles becomes pretty simple. First,
         // Draw the floor.
+        DrawFloor(o, offsetX);
+        // Then draw the obstacle. In the first loop, we draw an extra '_' but
+        // then we draw over it here anyway so it's not a big deal.
+        DrawColumn(o, offsetX);        
+    }
+
+    public static void DrawFloor(Obstacle o, int offsetX)
+    {
         int column = 0;
         while (column < o.Length)
         {
             FancyConsole.Write(baseRow, start - spaces + column + offsetX, "_");
             column++;
         }
+    }
 
-        // Then draw the obstacle. In the first loop, we draw an extra '_' but
-        // then we draw over it here anyway so it's not a big deal.
+    public static void DrawColumn(Obstacle o, int offsetX)
+    {
         int drawHeight = 0;
         while (drawHeight <= o.Height)
         {
