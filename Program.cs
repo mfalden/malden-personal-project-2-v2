@@ -42,7 +42,7 @@ public class Program
 
                 // TODO(jcollard 2022-03-06): You want to put at least a small delay
                 // at the end of the loop otherwise you will see flickering.
-                FancyConsole.Sleep(20);
+                FancyConsole.Sleep(50);
             }
         }
 
