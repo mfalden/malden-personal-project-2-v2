@@ -19,6 +19,7 @@ public class Obstacle
         possibleObstacles.Add(Obstacle0x);
         possibleObstacles.Add(Obstacle0x);
         possibleObstacles.Add(Obstacle2x);
+        possibleObstacles.Add(Obstacle2x);
 
         Random generator;
         generator = new Random();
