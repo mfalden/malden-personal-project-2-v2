@@ -49,6 +49,7 @@ public class Program
                 DrawAllObstacles2(obstacles);
                 DisplayDebugInfo();
                 Player.DrawPlayer();
+                Instructions();
                 FancyConsole.Refresh();
 
                 // TODO(jcollard 2022-03-06): You want to put at least a small delay
@@ -61,6 +62,11 @@ public class Program
 
         }
 
+    }
+    public static void Instructions()
+    {
+        FancyConsole.Write(1, 20, "Type 'j' to single jump."); 
+        FancyConsole.Write(2, 20, "Type 'd' to double jump."); 
     }
     public static void gameOver()
     {
