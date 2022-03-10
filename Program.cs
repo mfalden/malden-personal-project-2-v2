@@ -15,7 +15,10 @@ public class Program
     public static char asChar;
     public static void Main(string[] args)
     {
-        
+        // NOTE: around 470 ticks, the game breaks 
+        // BREAK: Obstacles glitch, player has no time to react and dies hitting an obstacle.
+        // WITH NO GAME OVER: at 450 ticks, obstacles glitch, then speed rapidly increases..... 
+        // hypothesis: the removal of obstacles from the list is what is causing this glitch.
 
         // Feedback(jcollard 2022-03-06): Fancy console is a bit weird, you need
         // to put it inside of a while loop to get it to work properly.
@@ -153,12 +156,11 @@ public class Program
 
     public static bool IsFirstElementRemovable()
     {
-        // Determine if I should remove the first element
-        // start - spaces + column + offsetX
         Obstacle o = obstacles[0];
-        if (start - spaces + 500 <= o.Length)
+        
+        if (totalLength - o.Length >= 250)
         {
-        return true;
+            return true;
         }
         return false;
     }
