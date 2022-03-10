@@ -26,6 +26,15 @@ public class Obstacle
         int randomNumber = generator.Next(0, possibleObstacles.Count);
         return possibleObstacles[randomNumber].Invoke();
     }
+public static Obstacle Obstacle00()
+    {
+        Obstacle o = new Obstacle();
+        o.X = 0; // total coordinate - 1
+        o.Height = -1; // total height - 1
+        o.SpaceBefore = 1; // total length - 1
+        o.SpaceAfter = 30; // total length
+        return o;
+    }
 public static Obstacle Obstacle0x()
     {
         Obstacle o = new Obstacle();

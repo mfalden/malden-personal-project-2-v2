@@ -9,9 +9,13 @@ public class Program
     public static int totalLength = 0;
     public static int spaces = 0;
     public static int lastobstaclelength = 0;
+    public static int ticks = 0;
     public static List<Obstacle> obstacles = new List<Obstacle>();
+    public static bool isGameOver = false;
+    public static char asChar;
     public static void Main(string[] args)
     {
+        
 
         // Feedback(jcollard 2022-03-06): Fancy console is a bit weird, you need
         // to put it inside of a while loop to get it to work properly.
@@ -29,23 +33,42 @@ public class Program
             // flickering.
 
             InitializeScreen();
-            
 
             bool hasGameStarted = true; // false for testing
             while (hasGameStarted == true)
             {
+                if (isGameOver)
+                {
+                gameOver();
+                hasGameStarted = false;
+                }
+                if (isGameOver == false)
+                {
                 FancyConsole.Clear();
                 MoveScreen();
                 DrawAllObstacles2(obstacles);
                 DisplayDebugInfo();
+                Player.DrawPlayer();
                 FancyConsole.Refresh();
 
                 // TODO(jcollard 2022-03-06): You want to put at least a small delay
                 // at the end of the loop otherwise you will see flickering.
                 FancyConsole.Sleep(50);
+                ticks++;
+                }
             }
+
+
         }
 
+    }
+    public static void gameOver()
+    {
+        FancyConsole.Clear();
+        FancyConsole.Refresh();
+        FancyConsole.SetColor(FancyColor.WHITE);
+        FancyConsole.Write(10, 10, "Game Over!"); 
+        FancyConsole.Write(12, 10, "Type 'R' to replay."); 
     }
 
     public static void InitializeScreen()
@@ -55,8 +78,9 @@ public class Program
         // List<Obstacle> obstacles = new List<Obstacle>();
         obstacles = new List<Obstacle>();
         int times = 10;
+        obstacles.Add(Obstacle.Obstacle00());
         while (times > 0)
-        {
+        {   
             obstacles.Add(Obstacle.GetRandomObstacle());
             times = times - 1;
         }
@@ -68,18 +92,8 @@ public class Program
 
     public static void MoveScreen()
     {
-        int input = FancyConsole.GetChar();
-        // if (input == null)
-        // {
-        //     throw new Exception("Input does not exist!");
-        // }
-        char asChar = (char)input;
-        // if (asChar == ' ')
-        // {
-
             spaces++;
             AddObstacle(obstacles);
-        // }
     }
 
     public static List<Obstacle> AddObstacle(List<Obstacle> obstacles)
@@ -97,39 +111,6 @@ public class Program
         return obstacles;
     }
 
-    // NOTE: DRAWALLOBSTACLES BEING EDITED. REFERENCE "Added Method Exception"
-    public static void DrawAllObstacles(List<Obstacle> obstacles)
-    {
-        foreach (Obstacle o in obstacles)
-        {
-            int columnNumber = 0;
-            int drawnHeight = 0;
-            while (columnNumber <= o.Length)
-            {
-                FancyConsole.Write(1, 0, $"Here: {spaces}");
-                while (columnNumber < o.X)
-                {
-                    FancyConsole.Write(2, 0, $"Here: {spaces}");
-
-                    FancyConsole.Write(baseRow, start - spaces + columnNumber + totalLength, "_");
-                    columnNumber++;
-                }
-                if (columnNumber == o.X)
-                {
-                    while (drawnHeight <= o.Height)
-                    {
-                        FancyConsole.Write(3, 0, $"Here: {spaces}");
-                        FancyConsole.Write(baseRow - drawnHeight, start - spaces + columnNumber + totalLength, "#");
-                        drawnHeight++;
-                    }
-                    columnNumber++;
-                }
-                FancyConsole.Write(baseRow, start - spaces + columnNumber + totalLength, "_");
-                columnNumber++;
-            }
-            totalLength += o.Length;
-        }
-    }
 
     public static void DrawAllObstacles2(List<Obstacle> obstacles)
     {
@@ -140,11 +121,28 @@ public class Program
         // down into simpler components: 
         // 1. Loop through all the obstacles
         // 2. Within that loop, draw a single element
+        if(IsFirstElementRemovable())
+        {
+            totalLength += obstacles[0].Length;
+            obstacles.RemoveAt(0);
+        }
         foreach(Obstacle o in obstacles)
         {
             DrawObstacle(o, totalLength);
             totalLength += o.Length;
         }
+    }
+
+    public static bool IsFirstElementRemovable()
+    {
+        // Determine if I should remove the first element
+        // start - spaces + column + offsetX
+        Obstacle o = obstacles[0];
+        if (start - spaces + 500 <= o.Length)
+        {
+        return true;
+        }
+        return false;
     }
     public static void DrawObstacle(Obstacle o, int offsetX)
     {
@@ -171,6 +169,10 @@ public class Program
         int drawHeight = 0;
         while (drawHeight <= o.Height)
         {
+            if ((start - spaces + o.X + offsetX == Player.startPosition) && (baseRow - Player.jumpHeight == baseRow - drawHeight))
+            {
+                isGameOver = true;
+            }
             FancyConsole.Write(baseRow - drawHeight, start - spaces + o.X + offsetX, "#");
             drawHeight++;
         }
