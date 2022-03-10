@@ -15,11 +15,7 @@ public class Program
     public static char asChar;
     public static void Main(string[] args)
     {
-        // NOTE: around 470 ticks, the game breaks 
-        // BREAK: Obstacles glitch, player has no time to react and dies hitting an obstacle.
-        // WITH NO GAME OVER: at 450 ticks, obstacles glitch, then speed rapidly increases..... 
-        // hypothesis: the removal of obstacles from the list is what is causing this glitch.
-
+        
         // Feedback(jcollard 2022-03-06): Fancy console is a bit weird, you need
         // to put it inside of a while loop to get it to work properly.
         while (true)
@@ -66,6 +62,7 @@ public class Program
         }
 
     }
+
     public static void Instructions()
     {
         FancyConsole.Write(1, 20, "Type 'j' to single jump."); 
