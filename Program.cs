@@ -69,6 +69,13 @@ public class Program
         FancyConsole.SetColor(FancyColor.WHITE);
         FancyConsole.Write(10, 10, "Game Over!"); 
         FancyConsole.Write(12, 10, "Type 'R' to replay."); 
+        asChar = (char)FancyConsole.GetChar();
+        if (asChar == 'R' || asChar == 'r')
+        {
+            InitializeScreen();
+            Player.PlayerReset();
+            isGameOver = false;
+        }
     }
 
     public static void InitializeScreen()
@@ -78,6 +85,11 @@ public class Program
         // List<Obstacle> obstacles = new List<Obstacle>();
         obstacles = new List<Obstacle>();
         int times = 10;
+        start = 0;
+        totalLength = 0;
+        spaces = 0;
+        lastobstaclelength = 0;
+        ticks = 0;
         obstacles.Add(Obstacle.Obstacle00());
         while (times > 0)
         {   

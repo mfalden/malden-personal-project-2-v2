@@ -7,6 +7,14 @@ public class Player
     public static char asChar;
     public static bool freeToJump = true;
     public static int startPosition = 10;
+    public static void PlayerReset()
+    {
+        jumpHeight = 0;
+        lastTicks = 0;
+        lastChar = 'o';
+        lastInput = 0;
+        asChar = 'o';
+    }
     public static void DrawPlayer()
     {
         PlayerJump();

@@ -32,7 +32,7 @@ public static Obstacle Obstacle00()
         o.X = 0; // total coordinate - 1
         o.Height = -1; // total height - 1
         o.SpaceBefore = 1; // total length - 1
-        o.SpaceAfter = 30; // total length
+        o.SpaceAfter = 50; // total length
         return o;
     }
 public static Obstacle Obstacle0x()
