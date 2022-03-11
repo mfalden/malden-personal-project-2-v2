@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Mindmagma.Curses;
 
 public class Program
 {
@@ -16,7 +16,7 @@ public class Program
     public static bool hasGameStarted = true;
     public static void Main(string[] args)
     {
-        
+
         // Feedback(jcollard 2022-03-06): Fancy console is a bit weird, you need
         // to put it inside of a while loop to get it to work properly.
         while (true)
@@ -34,25 +34,25 @@ public class Program
 
             InitializeScreen();
 
-             // false for testing
+            // false for testing
             while (hasGameStarted == true)
             {
                 if (isGameOver)
                 {
-                gameOver();
-                hasGameStarted = false;
+                    gameOver();
+                    hasGameStarted = false;
                 }
                 if (isGameOver == false)
                 {
-                FancyConsole.Clear();
-                MoveScreen();
-                DrawAllObstacles2(obstacles);
-                DisplayDebugInfo();
-                Player.DrawPlayer();
-                Instructions();
-                FancyConsole.Refresh();
-                FancyConsole.Sleep(50);
-                ticks++;
+                    FancyConsole.Clear();
+                    MoveScreen();
+                    DrawAllObstacles2(obstacles);
+                    DisplayDebugInfo();
+                    Player.DrawPlayer();
+                    Instructions();
+                    FancyConsole.Refresh();
+                    FancyConsole.Sleep(50);
+                    ticks++;
                 }
             }
 
@@ -63,54 +63,48 @@ public class Program
 
     public static void Instructions()
     {
-        FancyConsole.Write(1, 20, "Type 'j' to single jump."); 
-        FancyConsole.Write(2, 20, "Type 'd' to double jump."); 
+        FancyConsole.Write(1, 20, "Type 'j' to single jump.");
+        FancyConsole.Write(2, 20, "Type 'd' to double jump.");
     }
     public static void gameOver()
     {
         while (true)
         {
-        FancyConsole.Clear();
-        FancyConsole.Refresh();
-        FancyConsole.SetColor(FancyColor.WHITE);
-        FancyConsole.Write(10, 10, "Game Over!"); 
-        FancyConsole.Write(12, 10, "Type 'R' to replay."); 
-        //FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker."); 
-        asChar = (char)FancyConsole.GetChar();
-        if (asChar == 'R' || asChar == 'r')
-        {
-            InitializeScreen();
-            Player.PlayerReset();
-            isGameOver = false;
-        }
-        // if (asChar == 'S' || asChar == 's')
-        // {
-        //     while(true)
-        //     {
-        //     FancyConsole.Clear();
-        //     FancyConsole.Refresh();
-        //     FancyConsole.SetColor(FancyColor.WHITE);
-        //     FancyConsole.Write(1, 10, "High Score Tracker does not work!"); 
-        //     }
-        // }
-        FancyConsole.Sleep(50);
-        }
-    }
-    public static void AddHighScore()
-    {       
-            while(true)
-            {
             FancyConsole.Clear();
             FancyConsole.Refresh();
             FancyConsole.SetColor(FancyColor.WHITE);
-            FancyConsole.Write(6, 10, "Please type in your name: ");
-            string fileName = "scoresFile.txt";
-            bool testing = true;
-            if (!testing)
+            FancyConsole.Write(10, 10, "Game Over!");
+            FancyConsole.Write(12, 10, "Type 'R' to replay.");
+            FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker.");
+            asChar = (char)FancyConsole.GetChar();
+            if (asChar == 'R' || asChar == 'r')
             {
+                InitializeScreen();
+                Player.PlayerReset();
+                isGameOver = false;
+            }
+            if (asChar == 'S' || asChar == 's')
+            {
+                    AddHighScore();
+            }
+            FancyConsole.Sleep(50);
+        }
+    }
+    public static void AddHighScore()
+    {
+        FancyConsole.Clear();
+        FancyConsole.SetColor(FancyColor.WHITE);
+        FancyConsole.Write(6, 10, "Please type in your name: ");
+        string fileName = "scoresFile.txt";
+        bool testing = false;
+        if (!testing)
+        {
             List<string> scoreList = HighScoreTracker.LoadScoresFile(fileName);
             List<int> scoresOnly = HighScoreTracker.ScoreSplit(scoreList);
             string userName;
+            FancyConsole.Refresh();
+            NCurses.Move(6, 10 + "Please type in your name: ".Length);
+
             userName = Console.ReadLine().Replace(" ", "");
             int insertAt = HighScoreTracker.ScoreCompare(scoresOnly, spaces);
             List<string> finalScoreList = HighScoreTracker.AddScore(userName, spaces, insertAt, scoreList, fileName);
@@ -120,8 +114,11 @@ public class Program
                 FancyConsole.Write(row, 10, $"{line}");
                 row++;
             }
-            }
-            }
+            
+        }
+        FancyConsole.Refresh();
+        Console.ReadKey();
+
     }
     public static void InitializeScreen()
     {
@@ -137,7 +134,7 @@ public class Program
         ticks = 0;
         obstacles.Add(Obstacle.Obstacle00());
         while (times > 0)
-        {   
+        {
             obstacles.Add(Obstacle.GetRandomObstacle());
             times = times - 1;
         }
@@ -149,8 +146,8 @@ public class Program
 
     public static void MoveScreen()
     {
-            spaces++;
-            AddObstacle(obstacles);
+        spaces++;
+        AddObstacle(obstacles);
     }
 
     public static List<Obstacle> AddObstacle(List<Obstacle> obstacles)
@@ -178,12 +175,12 @@ public class Program
         // down into simpler components: 
         // 1. Loop through all the obstacles
         // 2. Within that loop, draw a single element
-        if(IsFirstElementRemovable())
+        if (IsFirstElementRemovable())
         {
             totalLength += obstacles[0].Length;
             obstacles.RemoveAt(0);
         }
-        foreach(Obstacle o in obstacles)
+        foreach (Obstacle o in obstacles)
         {
             DrawObstacle(o, totalLength);
             totalLength += o.Length;
@@ -193,7 +190,7 @@ public class Program
     public static bool IsFirstElementRemovable()
     {
         Obstacle o = obstacles[0];
-        
+
         if (totalLength - o.Length >= 250)
         {
             return true;
@@ -207,7 +204,7 @@ public class Program
         DrawFloor(o, offsetX);
         // Then draw the obstacle. In the first loop, we draw an extra '_' but
         // then we draw over it here anyway so it's not a big deal.
-        DrawColumn(o, offsetX);        
+        DrawColumn(o, offsetX);
     }
 
     public static void DrawFloor(Obstacle o, int offsetX)
