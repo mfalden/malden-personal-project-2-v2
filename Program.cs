@@ -13,6 +13,7 @@ public class Program
     public static List<Obstacle> obstacles = new List<Obstacle>();
     public static bool isGameOver = false;
     public static char asChar;
+    public static bool hasGameStarted = true;
     public static void Main(string[] args)
     {
         
@@ -33,7 +34,7 @@ public class Program
 
             InitializeScreen();
 
-            bool hasGameStarted = true; // false for testing
+             // false for testing
             while (hasGameStarted == true)
             {
                 if (isGameOver)
@@ -50,9 +51,6 @@ public class Program
                 Player.DrawPlayer();
                 Instructions();
                 FancyConsole.Refresh();
-
-                // TODO(jcollard 2022-03-06): You want to put at least a small delay
-                // at the end of the loop otherwise you will see flickering.
                 FancyConsole.Sleep(50);
                 ticks++;
                 }
@@ -70,11 +68,14 @@ public class Program
     }
     public static void gameOver()
     {
+        while (true)
+        {
         FancyConsole.Clear();
         FancyConsole.Refresh();
         FancyConsole.SetColor(FancyColor.WHITE);
         FancyConsole.Write(10, 10, "Game Over!"); 
         FancyConsole.Write(12, 10, "Type 'R' to replay."); 
+        FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker."); 
         asChar = (char)FancyConsole.GetChar();
         if (asChar == 'R' || asChar == 'r')
         {
@@ -82,8 +83,46 @@ public class Program
             Player.PlayerReset();
             isGameOver = false;
         }
+        if (asChar == 'S' || asChar == 's')
+        {
+            while(true)
+            {
+            FancyConsole.Clear();
+            FancyConsole.Refresh();
+            FancyConsole.SetColor(FancyColor.WHITE);
+            FancyConsole.Write(1, 10, "High Score Tracker does not work!"); 
+            }
+        }
+        FancyConsole.Sleep(50);
+        }
     }
-
+    public static void AddHighScore()
+    {       
+            while(true)
+            {
+            FancyConsole.Clear();
+            FancyConsole.Refresh();
+            FancyConsole.SetColor(FancyColor.WHITE);
+            FancyConsole.Write(6, 10, "Please type in your name: ");
+            string fileName = "scoresFile.txt";
+            bool testing = true;
+            if (!testing)
+            {
+            List<string> scoreList = HighScoreTracker.LoadScoresFile(fileName);
+            List<int> scoresOnly = HighScoreTracker.ScoreSplit(scoreList);
+            string userName;
+            userName = Console.ReadLine().Replace(" ", "");
+            int insertAt = HighScoreTracker.ScoreCompare(scoresOnly, spaces);
+            List<string> finalScoreList = HighScoreTracker.AddScore(userName, spaces, insertAt, scoreList, fileName);
+            int row = 7;
+            foreach (string line in finalScoreList)
+            {
+                FancyConsole.Write(row, 10, $"{line}");
+                row++;
+            }
+            }
+            }
+    }
     public static void InitializeScreen()
     {
         // Feedback(jcollard 2022-04-07): I changes this to reference the global obstacles list
