@@ -40,7 +40,6 @@ public class Program
                 if (isGameOver)
                 {
                     gameOver();
-                    hasGameStarted = false;
                 }
                 if (isGameOver == false)
                 {
@@ -76,12 +75,14 @@ public class Program
             FancyConsole.Write(10, 10, "Game Over!");
             FancyConsole.Write(12, 10, "Type 'R' to replay.");
             FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker.");
+            FancyConsole.Write(15, 10, "Type 'control c' to clear the console and quit.");
             asChar = (char)FancyConsole.GetChar();
             if (asChar == 'R' || asChar == 'r')
             {
                 InitializeScreen();
                 Player.PlayerReset();
                 isGameOver = false;
+                break;
             }
             if (asChar == 'S' || asChar == 's')
             {
@@ -114,6 +115,7 @@ public class Program
                 FancyConsole.Write(row, 10, $"{line}");
                 row++;
             }
+            FancyConsole.Write(5, 10, "Swipe up and press 'r' and 'enter' a few times to replay.");
 
         }
         FancyConsole.Refresh();
