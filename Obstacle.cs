@@ -11,7 +11,7 @@ public class Obstacle
     public int SpaceBefore, SpaceAfter;
     public int Length => SpaceAfter + SpaceBefore + 1;
 
-    public static Obstacle GetRandomObstacle() 
+    public static Obstacle GetRandomObstacle()
     {
         List<Func<Obstacle>> possibleObstacles = new List<Func<Obstacle>>();
 
@@ -26,7 +26,7 @@ public class Obstacle
         int randomNumber = generator.Next(0, possibleObstacles.Count);
         return possibleObstacles[randomNumber].Invoke();
     }
-public static Obstacle Obstacle00()
+    public static Obstacle Obstacle00()
     {
         Obstacle o = new Obstacle();
         o.X = 0; // total coordinate - 1
@@ -35,7 +35,7 @@ public static Obstacle Obstacle00()
         o.SpaceAfter = 50; // total length
         return o;
     }
-public static Obstacle Obstacle0x()
+    public static Obstacle Obstacle0x()
     {
         Obstacle o = new Obstacle();
         o.X = 0; // total coordinate - 1
@@ -45,7 +45,7 @@ public static Obstacle Obstacle0x()
         return o;
     }
 
-public static Obstacle Obstacle1x()
+    public static Obstacle Obstacle1x()
     {
         Obstacle o = new Obstacle();
         o.X = 3; // total coordinate - 1
@@ -54,8 +54,8 @@ public static Obstacle Obstacle1x()
         o.SpaceAfter = 15; // total length
         return o;
     }
-    
-       public static Obstacle Obstacle2x()
+
+    public static Obstacle Obstacle2x()
     {
         Obstacle o = new Obstacle();
         o.X = 8; // total coordinate - 1

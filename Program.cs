@@ -85,7 +85,7 @@ public class Program
             }
             if (asChar == 'S' || asChar == 's')
             {
-                    AddHighScore();
+                AddHighScore();
             }
             FancyConsole.Sleep(50);
         }
@@ -114,7 +114,7 @@ public class Program
                 FancyConsole.Write(row, 10, $"{line}");
                 row++;
             }
-            
+
         }
         FancyConsole.Refresh();
         Console.ReadKey();
@@ -175,6 +175,10 @@ public class Program
         // down into simpler components: 
         // 1. Loop through all the obstacles
         // 2. Within that loop, draw a single element
+        if (obstacles == null)
+        {
+            throw new Exception("Obstacles is null!");
+        }
         if (IsFirstElementRemovable())
         {
             totalLength += obstacles[0].Length;
