@@ -75,7 +75,7 @@ public class Program
         FancyConsole.SetColor(FancyColor.WHITE);
         FancyConsole.Write(10, 10, "Game Over!"); 
         FancyConsole.Write(12, 10, "Type 'R' to replay."); 
-        FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker."); 
+        //FancyConsole.Write(13, 10, "Type 'S' to add your score to the high score tracker."); 
         asChar = (char)FancyConsole.GetChar();
         if (asChar == 'R' || asChar == 'r')
         {
@@ -83,16 +83,16 @@ public class Program
             Player.PlayerReset();
             isGameOver = false;
         }
-        if (asChar == 'S' || asChar == 's')
-        {
-            while(true)
-            {
-            FancyConsole.Clear();
-            FancyConsole.Refresh();
-            FancyConsole.SetColor(FancyColor.WHITE);
-            FancyConsole.Write(1, 10, "High Score Tracker does not work!"); 
-            }
-        }
+        // if (asChar == 'S' || asChar == 's')
+        // {
+        //     while(true)
+        //     {
+        //     FancyConsole.Clear();
+        //     FancyConsole.Refresh();
+        //     FancyConsole.SetColor(FancyColor.WHITE);
+        //     FancyConsole.Write(1, 10, "High Score Tracker does not work!"); 
+        //     }
+        // }
         FancyConsole.Sleep(50);
         }
     }
